@@ -4,10 +4,12 @@ public class Cliente {
     
     private String nombre;
     private int nit;
+    private String direccion;
 
-    public Cliente(String nombre, int nit) {
+    public Cliente(String nombre, int nit, String direccion) {
         this.nombre = nombre;
         this.nit = nit;
+        this.direccion = direccion;
     }
 
     public Cliente() {
@@ -29,9 +31,17 @@ public class Cliente {
         this.nit = nit;
     }
 
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
     @Override
     public String toString() {
-        return "Cliente{" + "nombre=" + nombre + ", nit=" + nit + '}';
+        return "Cliente{" + "nombre=" + nombre + ", nit=" + nit + ", direccion=" + direccion + '}';
     }
     
 }
