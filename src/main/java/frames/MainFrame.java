@@ -19,6 +19,8 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         
+        this.setLocationRelativeTo(null);
+        
         this.labelNIT.setVisible(false);
         this.txtNIT.setVisible(false);
     }
@@ -175,7 +177,7 @@ public class MainFrame extends javax.swing.JFrame {
                 int indicator = 1;
                 
                 while (indicator == 1) {
-                    nit = JOptionPane.showInputDialog(null, "Ingrese el NIT del cliente", "Numero de NIT", 1);
+                    nit = JOptionPane.showInputDialog(null, "Ingrese el NIT del cliente", "Numero de NIT", JOptionPane.PLAIN_MESSAGE);
                     
                     if (nit == null) {
                         nit = "invalid";
