@@ -32,6 +32,8 @@ public class MainFrame extends javax.swing.JFrame {
         this.labelNIT.setVisible(false);
         this.txtNIT.setVisible(false);
         
+        this.setVisible(true);
+        
         this.windowEvents();
         
         this.setDireccionDeEmision();
@@ -66,8 +68,6 @@ public class MainFrame extends javax.swing.JFrame {
                     } else {
                         this.factura.setDireccionEmision(direccion);
                         this.setTitle(this.getTitle() + " - " + direccion);
-                    
-                        this.setVisible(true);
                     
                         indicator = 0;
                     }
@@ -105,6 +105,7 @@ public class MainFrame extends javax.swing.JFrame {
         btnRegistrarProducto = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableProductos = new javax.swing.JTable();
+        btnLimpiar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de facturas");
@@ -295,16 +296,25 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tableProductos);
 
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLimpiarMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panelDatosCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnLimpiar)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(panelDatosCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1)))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -316,7 +326,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnLimpiar)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -675,9 +687,35 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tableProductosMouseClicked
 
+    private void btnLimpiarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLimpiarMouseClicked
+        if (JOptionPane.showConfirmDialog(null, "Deseas eliminar todos los datos de la factura.", "Advertencia",
+                                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            this.txtNombreCliente.setText("");
+            this.txtDireccionCliente.setText("");
+            this.ComboBoxNIT.setSelectedIndex(0);
+            this.txtNIT.setText("");
+            
+            this.labelNIT.setVisible(false);
+            this.txtNIT.setVisible(false);
+            
+            this.txtDescripcionProducto.setText("");
+            this.txtCantidadProducto.setText("");
+            this.txtValorProducto.setText("");
+            
+            this.factura.setListaProductos(new ArrayList<>());
+            
+            DefaultTableModel model = (DefaultTableModel) this.tableProductos.getModel();
+            model.setRowCount(0);
+            this.tableProductos.setModel(model);
+        } else {
+            /////////////////////////////////////////////
+        }
+    }//GEN-LAST:event_btnLimpiarMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> ComboBoxNIT;
+    private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnRegistrarProducto;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
