@@ -1,28 +1,81 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package frames;
 
+import entity.Factura;
+import entity.Producto;
 import java.awt.event.ItemEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.text.DecimalFormat;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author paulo
- */
 public class MainFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MainFrame
-     */
+    private String direccion;
+    private Factura factura;
+    
     public MainFrame() {
         initComponents();
         
         this.setLocationRelativeTo(null);
         
+        this.factura = new Factura();
+        
+        int idFactura = (int) ((Math.random() * (9000 - 1000)) + 1000);
+        factura.setIdFactura(idFactura);
+        factura.setFechaEmision(LocalDateTime.now());
+        
         this.labelNIT.setVisible(false);
         this.txtNIT.setVisible(false);
+        
+        this.windowEvents();
+        
+        this.setDireccionDeEmision();
+    }
+    
+    private void windowEvents() {
+        this.addWindowListener(new WindowAdapter() {
+            
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+            
+        });
+    }
+    
+    private void setDireccionDeEmision() {
+        String direccion = "";
+        
+        int indicator = 1;
+        while (indicator == 1) {
+            direccion = JOptionPane.showInputDialog(null, "Ingrese la direccion donde se va a emitir la factura", "Sistema de facturas", JOptionPane.PLAIN_MESSAGE);
+            
+            if (direccion == null) {
+                this.dispose();
+                
+                System.exit(0);
+            } else {
+                if (direccion.equals("")) {
+                    JOptionPane.showMessageDialog(null, "La direccion de emision no puede estar vacia.", "Sistema de facturas", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    if (direccion.length() < 5) {
+                        JOptionPane.showMessageDialog(null, "La direccion ingresada no es valida, es muy corta.", "Sistema de facturas", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        this.factura.setDireccionEmision(direccion);
+                        this.setTitle(this.getTitle() + " - " + direccion);
+                    
+                        this.setVisible(true);
+                    
+                        indicator = 0;
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -44,6 +97,16 @@ public class MainFrame extends javax.swing.JFrame {
         txtDireccionCliente = new javax.swing.JTextField();
         labelNIT = new javax.swing.JLabel();
         txtNIT = new javax.swing.JTextField();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        txtDescripcionProducto = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtCantidadProducto = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtValorProducto = new javax.swing.JTextField();
+        btnRegistrarProducto = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableProductos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de facturas");
@@ -132,13 +195,118 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPanel1.setBackground(new java.awt.Color(153, 153, 153));
+        jPanel1.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Datos de los productos"), new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true)));
+
+        jLabel1.setText("Descripcion del producto:");
+
+        txtDescripcionProducto.setToolTipText("Ingrese la descripcion del producto.");
+        txtDescripcionProducto.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+
+        jLabel4.setText("Cantidad del producto:");
+
+        txtCantidadProducto.setToolTipText("Ingrese la cantidad del producto comprado.");
+        txtCantidadProducto.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+
+        jLabel6.setText("Valor del producto:");
+
+        txtValorProducto.setToolTipText("Ingrese el valor unitario del producto.");
+        txtValorProducto.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+
+        btnRegistrarProducto.setText("Registrar");
+        btnRegistrarProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarProductoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtDescripcionProducto)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txtCantidadProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txtValorProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRegistrarProducto)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtDescripcionProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(txtCantidadProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtValorProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6))
+                        .addGap(14, 14, 14))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRegistrarProducto)
+                        .addContainerGap())))
+        );
+
+        tableProductos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID Producto", "Descripcion", "Cantidad", "Precio unitario", "Precio total"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tableProductos.setGridColor(new java.awt.Color(204, 204, 204));
+        tableProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableProductosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tableProductos);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(panelDatosCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(panelDatosCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -146,7 +314,11 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelDatosCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(391, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(53, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -163,7 +335,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
@@ -190,29 +362,11 @@ public class MainFrame extends javax.swing.JFrame {
                         indicator = 0;
                     }
                     
-                    boolean isNotEmptyAndHasProperLenght = !nit.isEmpty() && nit.length() >= 9, containsLettersOrSpecial = false;
+                    boolean isNotEmptyAndHasProperLenght = !nit.isEmpty() && nit.length() >= 9;
                     
                     if (!nit.equals("invalid")) {
                         if (isNotEmptyAndHasProperLenght) {           
-                            String special = "!#$%&'()*+,-./:;<=>?@[]^_`{|}";
-                            
-                            char[] arr = nit.toCharArray();
-                            char[] special_arr = special.toCharArray();
-                            
-                            for (char c : arr) {
-                                if (Character.isLetter(c)) {
-                                    containsLettersOrSpecial = true;
-                                    break;
-                                }
-                                for (char s : special_arr) {
-                                    if (c == s) {
-                                        containsLettersOrSpecial = true;
-                                        break;
-                                    }
-                                }
-                            }
-                            
-                            if (!containsLettersOrSpecial) {
+                            if (!this.containsLettersOrSpecial(this.txtNIT.getText().toCharArray(), Optional.empty())) {
                                 JOptionPane.showMessageDialog(null, "El numero de NIT fue correctamente registrado.", "Numero de NIT", JOptionPane.INFORMATION_MESSAGE);
                                 
                                 this.labelNIT.setVisible(true);
@@ -224,7 +378,7 @@ public class MainFrame extends javax.swing.JFrame {
                                 JOptionPane.showMessageDialog(null, "El NIT no puede contener letras o caracteres especiales.", "Numero de NIT", JOptionPane.WARNING_MESSAGE);
                             }
                         } else {
-                            JOptionPane.showMessageDialog(null, "El numero de caracteres del NIT ingresado no es valido.", "Numero de NIT", JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "El numero de caracteres del NIT ingresado no es valido o esta vacio.", "Numero de NIT", JOptionPane.WARNING_MESSAGE);
                         }
                     }
                     
@@ -238,18 +392,312 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_ComboBoxNITItemStateChanged
+    
+    private void fillTablaProducto(List<Producto> lista) {
+        DefaultTableModel model = (DefaultTableModel) this.tableProductos.getModel();
+        model.setRowCount(0);
+        this.tableProductos.setModel(model);
+        
+        Object[] data = new Object[this.tableProductos.getColumnCount()];
+        DefaultTableModel newModel = (DefaultTableModel) this.tableProductos.getModel();
+        for (Producto producto : lista) {
+            data[0] = producto.getIdProducto();
+            data[1] = producto.getDescripcion();
+            data[2] = producto.getCantidad();
+            
+            DecimalFormat df = new DecimalFormat("#.##");
+            
+            double precioUnitario = Double.parseDouble(df.format(producto.getPrecioUnitario()));
+            double precioTotal = Double.parseDouble(df.format(producto.getPrecioTotal()));
+            
+            data[3] = "Q." + precioUnitario;
+            data[4] = "Q." + precioTotal;
+            
+            newModel.addRow(data);
+        }
+        
+        this.tableProductos.setModel(newModel);
+    }
+    
+    private boolean containsLettersOrSpecial(char[] charArray, Optional<Character> charToSkip) {
+        String special = "!#$%&'()*+,-./:;<=>?@[]^_`{|}";
+        
+        char[] arrSpecial = special.toCharArray();
+        for (Character c : charArray) {
+            if (Character.isLetter(c)) {
+                return true;
+            }
+            for (Character c2 : arrSpecial) {
+                if (charToSkip.isPresent()) {
+                    if (!c2.equals(charToSkip.get())) {
+                        if (c.equals(c2)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    private void btnRegistrarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarProductoActionPerformed
+        if (this.tableProductos.getRowCount() >= 5) {
+            this.txtDescripcionProducto.setText("");
+            this.txtCantidadProducto.setText("");
+            this.txtValorProducto.setText("");
+            
+            JOptionPane.showMessageDialog(null, "No se pueden ingresar mas de 5 productos.", "Producto", JOptionPane.ERROR_MESSAGE);
+        } else {
+            List<Producto> listaProducto;
+
+            Optional<List<Producto>> optLista = Optional.ofNullable(factura.getListaProductos());
+            if (optLista.isPresent()) {
+                listaProducto = optLista.get();
+            } else {
+                listaProducto = new ArrayList<>();
+            }
+
+            boolean descripcionV = false, cantidadV = false, precioV = false;
+
+            Producto producto = new Producto();
+            int idProducto = (int) ((Math.random() * (9000 - 1000)) + 1000);
+
+            producto.setIdProducto(idProducto);
+
+            if (this.txtDescripcionProducto.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "La descripcion del producto no puede estar vacia.", "Producto", JOptionPane.WARNING_MESSAGE);
+            } else {
+                producto.setDescripcion(this.txtDescripcionProducto.getText());
+                descripcionV = true;
+            }
+
+            if (this.txtCantidadProducto.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Debe ingresar una cantidad de producto.", "Producto", JOptionPane.WARNING_MESSAGE);
+            } else {
+                if (this.containsLettersOrSpecial(this.txtCantidadProducto.getText().toCharArray(), Optional.empty())) {
+                    JOptionPane.showMessageDialog(null, "No se pueden ingresar letras o caracteres especiales en la casilla de cantidad del producto.", "Producto", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    int cantidad = Integer.parseInt(this.txtCantidadProducto.getText());
+                    if (cantidad < 0) {
+                        JOptionPane.showMessageDialog(null, "Debe ingresar una cantidad mayor a 0.", "Producto", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        producto.setCantidad(cantidad);
+                        cantidadV = true;
+                    }
+                }
+            }
+
+            if (this.txtValorProducto.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Debe ingresar el precio del producto.", "Producto", JOptionPane.WARNING_MESSAGE);
+            } else {
+                if (this.containsLettersOrSpecial(this.txtValorProducto.getText().toCharArray(), Optional.of('.'))) {
+                    JOptionPane.showMessageDialog(null, "No se pueden ingresar letras o caracteres especiales en la casilla de precio del producto.", "Producto", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    double precio = Double.parseDouble(this.txtValorProducto.getText());
+                    if (precio < 0) {
+                        JOptionPane.showMessageDialog(null, "Debe ingresar un precio mayor a 0.", "Producto", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        producto.setPrecioUnitario(precio);
+
+                        double precioTotal = precio * Double.parseDouble(this.txtCantidadProducto.getText());
+                        producto.setPrecioTotal(precioTotal);
+                        precioV = true;
+                    }
+                }
+            }
+
+            if (descripcionV && cantidadV && precioV) {
+                listaProducto.add(producto);
+                factura.setListaProductos(listaProducto);
+
+                this.fillTablaProducto(listaProducto);
+
+                JOptionPane.showMessageDialog(null, "Informacion de producto correctamente agregada.", "Producto", JOptionPane.INFORMATION_MESSAGE);
+
+                this.txtDescripcionProducto.setText("");
+                this.txtCantidadProducto.setText("");
+                this.txtValorProducto.setText("");
+            }
+        }
+    }//GEN-LAST:event_btnRegistrarProductoActionPerformed
+
+    private void tableProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableProductosMouseClicked
+        int row = this.tableProductos.getSelectedRow();
+        int column = this.tableProductos.getSelectedColumn();
+
+        if (row != -1) {
+            if (row != 4) {
+                int idProducto = Integer.parseInt(this.tableProductos.getValueAt(row, 0).toString());
+
+                List<Producto> nuevaLista;
+
+                Optional<List<Producto>> optLista = Optional.ofNullable(this.factura.getListaProductos());
+                if (optLista.isPresent()) {
+                    List<Producto> listaVieja = optLista.get();
+                    Producto producto = listaVieja.stream().filter(p -> p.getIdProducto() == idProducto).findFirst().get();
+
+                    int index = listaVieja.indexOf(producto);
+                    switch (column) {
+                        case 0: {
+                            if (JOptionPane.showConfirmDialog(null, "Deseas eliminar el producto con el ID: " + producto.getIdProducto() + " de la lista de productos?", "Advertencia",
+                                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                                listaVieja.remove(index);
+                                nuevaLista = listaVieja;
+
+                                factura.setListaProductos(nuevaLista);
+                                this.fillTablaProducto(nuevaLista);
+
+                                JOptionPane.showMessageDialog(null, "El elemento fue borrado de la lista de productos.", "Producto", JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                /////////////////////////////////////////////////////////////
+                            }
+                            break;
+                        }
+                        case 1: {
+                            String descripcion = "";
+
+                            int indicator = 1;
+                            while (indicator == 1) {
+                                descripcion = JOptionPane.showInputDialog(null, "Ingrese la nueva descripcion del producto", "Producto", JOptionPane.PLAIN_MESSAGE);
+
+                                if (descripcion == null) {
+                                    indicator = 0;
+                                } else {
+                                    if (descripcion.isEmpty()) {
+                                        JOptionPane.showMessageDialog(null, "No se puede dejar la descripcion del producto en blanco.", "Producto", JOptionPane.WARNING_MESSAGE);
+                                    } else {
+                                        producto.setDescripcion(descripcion);
+
+                                        listaVieja.remove(index);
+                                        nuevaLista = listaVieja;
+
+                                        nuevaLista.add(index, producto);
+
+                                        factura.setListaProductos(nuevaLista);
+                                        this.fillTablaProducto(nuevaLista);
+
+                                        JOptionPane.showMessageDialog(null, "La descripcion del producto con el ID: " + idProducto + " fue correctamente modificada.", "Producto", JOptionPane.INFORMATION_MESSAGE);
+
+                                        indicator = 0;
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                        case 2: {
+                            String cantidad = "";
+
+                            int indicator = 1;
+                            while (indicator == 1) {
+                                cantidad = JOptionPane.showInputDialog(null, "Ingrese la nueva descripcion del producto", "Producto", JOptionPane.PLAIN_MESSAGE);
+
+                                if (cantidad == null) {
+                                    indicator = 0;
+                                } else {
+                                    if (cantidad.isEmpty()) {
+                                        JOptionPane.showMessageDialog(null, "No se puede dejar la descripcion del producto en blanco.", "Producto", JOptionPane.WARNING_MESSAGE);
+                                    } else {
+                                        if (this.containsLettersOrSpecial(cantidad.toCharArray(), Optional.empty())) {
+                                            JOptionPane.showMessageDialog(null, "La cantidad no puede contener letras o caracteres especiales.", "Producto", JOptionPane.WARNING_MESSAGE);
+                                        } else {
+                                            int parseCantidad = Integer.parseInt(cantidad);
+                                            if (parseCantidad <= 0) {
+                                                JOptionPane.showMessageDialog(null, "La cantidad no puede ser menor o igual a 0.", "Producto", JOptionPane.WARNING_MESSAGE);
+                                            } else {
+                                                double nuevoPrecioTotal = parseCantidad * producto.getPrecioUnitario();
+                                                
+                                                producto.setCantidad(parseCantidad);
+                                                producto.setPrecioTotal(nuevoPrecioTotal);
+                                                
+                                                listaVieja.remove(index);
+                                                nuevaLista = listaVieja;
+
+                                                nuevaLista.add(index, producto);
+
+                                                factura.setListaProductos(nuevaLista);
+                                                this.fillTablaProducto(nuevaLista);
+
+                                                JOptionPane.showMessageDialog(null, "La cantidad del producto con el ID: " + idProducto + " fue correctamente modificada.", "Producto", JOptionPane.INFORMATION_MESSAGE);
+
+                                                indicator = 0;
+                                            } 
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                        case 3: {
+                            String precio_unitario = "";
+
+                            int indicator = 1;
+                            while (indicator == 1) {
+                                precio_unitario = JOptionPane.showInputDialog(null, "Ingrese el nuevo precio unitario del producto", "Producto", JOptionPane.PLAIN_MESSAGE);
+
+                                if (precio_unitario == null) {
+                                    indicator = 0;
+                                } else {
+                                    if (precio_unitario.isEmpty()) {
+                                        JOptionPane.showMessageDialog(null, "No se puede el precio unitario del producto en blanco.", "Producto", JOptionPane.WARNING_MESSAGE);
+                                    } else {
+                                        if (this.containsLettersOrSpecial(precio_unitario.toCharArray(), Optional.of('.'))) {
+                                            JOptionPane.showMessageDialog(null, "El precio unitario no puede contener letras o caracteres especiales.", "Producto", JOptionPane.WARNING_MESSAGE);
+                                        } else {
+                                            double parsePrecioUnitario = Double.parseDouble(precio_unitario);
+                                            if (parsePrecioUnitario <= 0) {
+                                                JOptionPane.showMessageDialog(null, "El precio unitario no puede ser menor o igual a 0.", "Producto", JOptionPane.WARNING_MESSAGE);
+                                            } else {
+                                                double nuevoPrecioTotal = parsePrecioUnitario * producto.getCantidad();
+                                                
+                                                producto.setPrecioUnitario(parsePrecioUnitario);
+                                                producto.setPrecioTotal(nuevoPrecioTotal);
+                                                
+                                                listaVieja.remove(index);
+                                                nuevaLista = listaVieja;
+
+                                                nuevaLista.add(index, producto);
+
+                                                factura.setListaProductos(nuevaLista);
+                                                this.fillTablaProducto(nuevaLista);
+
+                                                JOptionPane.showMessageDialog(null, "El precio unitario del producto con el ID: " + idProducto + " fue correctamente modificado.", "Producto", JOptionPane.INFORMATION_MESSAGE);
+
+                                                indicator = 0;
+                                            } 
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_tableProductosMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> ComboBoxNIT;
+    private javax.swing.JButton btnRegistrarProducto;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelNIT;
     private javax.swing.JPanel panelDatosCliente;
+    private javax.swing.JTable tableProductos;
+    private javax.swing.JTextField txtCantidadProducto;
+    private javax.swing.JTextField txtDescripcionProducto;
     private javax.swing.JTextField txtDireccionCliente;
     private javax.swing.JTextField txtNIT;
     private javax.swing.JTextField txtNombreCliente;
+    private javax.swing.JTextField txtValorProducto;
     // End of variables declaration//GEN-END:variables
 }
