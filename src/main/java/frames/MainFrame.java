@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
 public class MainFrame extends javax.swing.JFrame {
 
     private String direccion;
-    private Factura factura;
+    private final Factura factura;
     
     public MainFrame() {
         initComponents();
@@ -49,8 +49,6 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     private void setDireccionDeEmision() {
-        String direccion = "";
-        
         int indicator = 1;
         while (indicator == 1) {
             direccion = JOptionPane.showInputDialog(null, "Ingrese la direccion donde se va a emitir la factura", "Sistema de facturas", JOptionPane.PLAIN_MESSAGE);
