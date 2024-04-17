@@ -19,5 +19,6 @@ public class Producto {
     
     private double precioUnitario;
     private double precioTotal;
-        
+    
+    private double precioTotalIVA;
 }

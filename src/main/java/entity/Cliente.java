@@ -1,5 +1,6 @@
 package entity;
 
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import lombok.ToString;
 public class Cliente {
     
     private String nombre;
-    private int nit;
+    private Optional<Integer> nit;
     private String direccion;
 
 }
