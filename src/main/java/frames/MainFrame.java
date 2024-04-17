@@ -10,8 +10,8 @@ import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,6 +19,8 @@ public class MainFrame extends javax.swing.JFrame {
 
     private String direccion;
     private final Factura factura;
+
+    private final BillPrintingFrame billPrintingFrame;
 
     public MainFrame() {
         initComponents();
@@ -36,20 +38,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         this.setVisible(true);
 
-        this.windowEvents();
+        this.billPrintingFrame = new BillPrintingFrame(this);
+
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.setDireccionDeEmision();
-    }
-
-    private void windowEvents() {
-        this.addWindowListener(new WindowAdapter() {
-
-            @Override
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-
-        });
     }
 
     private void setDireccionDeEmision() {
@@ -87,7 +80,7 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
+        paneFacturacion = new javax.swing.JPanel();
         panelDatosCliente = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtNombreCliente = new javax.swing.JTextField();
@@ -116,8 +109,8 @@ public class MainFrame extends javax.swing.JFrame {
         setLocation(new java.awt.Point(0, 0));
         setResizable(false);
 
-        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
-        jPanel2.setBorder(javax.swing.BorderFactory.createCompoundBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 51, 51), 1, true), "Sistema de facturacion")));
+        paneFacturacion.setBackground(new java.awt.Color(204, 204, 204));
+        paneFacturacion.setBorder(javax.swing.BorderFactory.createCompoundBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 51, 51), 1, true), "Sistema de facturacion")));
 
         panelDatosCliente.setBackground(new java.awt.Color(153, 153, 153));
         panelDatosCliente.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Datos del cliente"), javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0))));
@@ -312,15 +305,15 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout paneFacturacionLayout = new javax.swing.GroupLayout(paneFacturacion);
+        paneFacturacion.setLayout(paneFacturacionLayout);
+        paneFacturacionLayout.setHorizontalGroup(
+            paneFacturacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paneFacturacionLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(paneFacturacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelDatosCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGroup(paneFacturacionLayout.createSequentialGroup()
                         .addComponent(btnLimpiar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnGenerar))
@@ -328,9 +321,9 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        paneFacturacionLayout.setVerticalGroup(
+            paneFacturacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(paneFacturacionLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelDatosCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -338,7 +331,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(paneFacturacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLimpiar)
                     .addComponent(btnGenerar))
                 .addContainerGap(12, Short.MAX_VALUE))
@@ -350,14 +343,14 @@ public class MainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(paneFacturacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(paneFacturacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -527,10 +520,10 @@ public class MainFrame extends javax.swing.JFrame {
 
                         double precioTotal = precio * Double.parseDouble(this.txtCantidadProducto.getText());
                         producto.setPrecioTotal(precioTotal);
-                        
+
                         double precioIva = producto.getPrecioTotal() * 0.12;
                         double precioTotalIVA = producto.getPrecioTotal() + precioIva;
-                        
+
                         producto.setPrecioTotalIVA(precioTotalIVA);
                         precioV = true;
                     }
@@ -639,10 +632,10 @@ public class MainFrame extends javax.swing.JFrame {
 
                                                 producto.setCantidad(parseCantidad);
                                                 producto.setPrecioTotal(nuevoPrecioTotal);
-                                                
+
                                                 double nuevoPrecioIVA = producto.getPrecioTotal() * 0.12;
                                                 double nuevoPrecioTotalIVA = producto.getPrecioTotal() + nuevoPrecioIVA;
-                                                
+
                                                 producto.setPrecioTotalIVA(nuevoPrecioTotalIVA);
 
                                                 listaVieja.remove(index);
@@ -687,10 +680,10 @@ public class MainFrame extends javax.swing.JFrame {
 
                                                 producto.setPrecioUnitario(parsePrecioUnitario);
                                                 producto.setPrecioTotal(nuevoPrecioTotal);
-                                                
+
                                                 double nuevoPrecioIVA = producto.getPrecioTotal() * 0.12;
                                                 double nuevoPrecioTotalIVA = producto.getPrecioTotal() + nuevoPrecioIVA;
-                                                
+
                                                 producto.setPrecioTotalIVA(nuevoPrecioTotalIVA);
 
                                                 listaVieja.remove(index);
@@ -718,80 +711,86 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_tableProductosMouseClicked
 
     private void btnLimpiarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLimpiarMouseClicked
-        if (JOptionPane.showConfirmDialog(null, "Deseas eliminar todos los datos de la factura.", "Advertencia",
-                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            this.txtNombreCliente.setText("");
-            this.txtDireccionCliente.setText("");
-            this.ComboBoxNIT.setSelectedIndex(0);
-            this.txtNIT.setText("");
+        if (!this.billPrintingFrame.isVisible()) {
+            if (JOptionPane.showConfirmDialog(null, "Deseas eliminar todos los datos de la factura.", "Advertencia",
+                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                this.txtNombreCliente.setText("");
+                this.txtDireccionCliente.setText("");
+                this.ComboBoxNIT.setSelectedIndex(0);
+                this.txtNIT.setText("");
 
-            this.labelNIT.setVisible(false);
-            this.txtNIT.setVisible(false);
+                this.labelNIT.setVisible(false);
+                this.txtNIT.setVisible(false);
 
-            this.txtDescripcionProducto.setText("");
-            this.txtCantidadProducto.setText("");
-            this.txtValorProducto.setText("");
+                this.txtDescripcionProducto.setText("");
+                this.txtCantidadProducto.setText("");
+                this.txtValorProducto.setText("");
 
-            this.factura.setListaProductos(new ArrayList<>());
+                this.factura.setListaProductos(new ArrayList<>());
 
-            DefaultTableModel model = (DefaultTableModel) this.tableProductos.getModel();
-            model.setRowCount(0);
-            this.tableProductos.setModel(model);
-        } else {
-            /////////////////////////////////////////////
+                DefaultTableModel model = (DefaultTableModel) this.tableProductos.getModel();
+                model.setRowCount(0);
+                this.tableProductos.setModel(model);
+            } else {
+                /////////////////////////////////////////////
+            }
         }
     }//GEN-LAST:event_btnLimpiarMouseClicked
 
     private void btnGenerarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGenerarMouseClicked
-        if (!this.txtNombreCliente.getText().isEmpty()) {
-            String name = this.txtNombreCliente.getText();
-            Cliente cliente = new Cliente();
-            String numbers = "0123456789";
-            boolean nameContainsNumber = false;
-            for (Character c : name.toCharArray()) {
-                for (Character n : numbers.toCharArray()) {
-                    if (c.equals(n)) {
-                        nameContainsNumber = true;
-                        break;
+        if (!this.billPrintingFrame.isVisible()) {
+            if (!this.txtNombreCliente.getText().isEmpty()) {
+                String name = this.txtNombreCliente.getText();
+                Cliente cliente = new Cliente();
+                String numbers = "0123456789";
+                boolean nameContainsNumber = false;
+                for (Character c : name.toCharArray()) {
+                    for (Character n : numbers.toCharArray()) {
+                        if (c.equals(n)) {
+                            nameContainsNumber = true;
+                            break;
+                        }
                     }
                 }
-            }
-            if (!nameContainsNumber) {
-                if (!this.txtDireccionCliente.getText().isEmpty()) {
-                    Optional<List<Producto>> optLista = Optional.ofNullable(this.factura.getListaProductos());
-                    if (optLista.isPresent()) {
-                        List<Producto> lista = optLista.get();
-                        if (!lista.isEmpty()) {
-                            cliente.setNombre(name);
-                            if (this.ComboBoxNIT.getSelectedIndex() == 1) {
-                                cliente.setNit(Optional.of(Integer.valueOf(this.txtNIT.getText())));
+                if (!nameContainsNumber) {
+                    if (!this.txtDireccionCliente.getText().isEmpty()) {
+                        Optional<List<Producto>> optLista = Optional.ofNullable(this.factura.getListaProductos());
+                        if (optLista.isPresent()) {
+                            List<Producto> lista = optLista.get();
+                            if (!lista.isEmpty()) {
+                                cliente.setNombre(name);
+                                if (this.ComboBoxNIT.getSelectedIndex() == 1) {
+                                    cliente.setNit(Optional.of(Integer.valueOf(this.txtNIT.getText())));
+                                } else {
+                                    cliente.setNit(Optional.empty());
+                                }
+                                cliente.setDireccion(this.txtDireccionCliente.getText());
+                                this.factura.setCliente(cliente);
+
+                                double total = lista.get(0).getPrecioTotalIVA();
+                                for (int i = 1; i < lista.size(); i++) {
+                                    total += lista.get(i).getPrecioTotalIVA();
+                                }
+
+                                this.factura.setTotal(total);
+
+                                this.billPrintingFrame.setFactura(this.factura);
+                                this.billPrintingFrame.printFactura();
                             } else {
-                                cliente.setNit(Optional.empty());
+                                JOptionPane.showMessageDialog(null, "La lista de productos no puede estar vacia.", "Sistema de facturas", JOptionPane.WARNING_MESSAGE);
                             }
-                            cliente.setDireccion(this.txtDireccionCliente.getText());
-                            this.factura.setCliente(cliente);
-                            
-                            double total = lista.get(0).getPrecioTotalIVA();
-                            for (int i = 1; i < lista.size(); i++) {
-                                total += lista.get(i).getPrecioTotalIVA();
-                            }
-                            
-                            this.factura.setTotal(total);
-                            System.out.println(this.factura.toString());
                         } else {
                             JOptionPane.showMessageDialog(null, "La lista de productos no puede estar vacia.", "Sistema de facturas", JOptionPane.WARNING_MESSAGE);
                         }
                     } else {
-                        JOptionPane.showMessageDialog(null, "La lista de productos no puede estar vacia.", "Sistema de facturas", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "La direccion del cliente no puede estar vacia.", "Sistema de facturas", JOptionPane.WARNING_MESSAGE);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "La direccion del cliente no puede estar vacia.", "Sistema de facturas", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "El nombre del cliente no puede contener numeros.", "Sistema de facturas", JOptionPane.WARNING_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "El nombre del cliente no puede contener numeros.", "Sistema de facturas", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "El nombre del cliente no puede estar vacio.", "Sistema de facturas", JOptionPane.WARNING_MESSAGE);
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "El nombre del cliente no puede estar vacio.", "Sistema de facturas", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnGenerarMouseClicked
 
@@ -808,9 +807,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelNIT;
+    private javax.swing.JPanel paneFacturacion;
     private javax.swing.JPanel panelDatosCliente;
     private javax.swing.JTable tableProductos;
     private javax.swing.JTextField txtCantidadProducto;
