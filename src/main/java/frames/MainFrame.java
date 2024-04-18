@@ -62,7 +62,7 @@ public class MainFrame extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "La direccion ingresada no es valida, es muy corta.", "Sistema de facturas", JOptionPane.WARNING_MESSAGE);
                     } else {
                         this.factura.setDireccionEmision(direccion);
-                        this.setTitle(this.getTitle() + " - " + direccion);
+                        this.setTitle(this.getTitle() + " - Direccion: " + direccion);
 
                         indicator = 0;
                     }
