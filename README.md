@@ -5,7 +5,8 @@ Sistema de facturas para Introduccion de Sistemas.
 ![cap3](https://github.com/pmont4/SysFacturas/assets/84726204/ddb4634b-2d31-4ade-9c1c-05a6d987b893)
 ![cap4](https://github.com/pmont4/SysFacturas/assets/84726204/dbeaedd2-b7f0-489b-be6f-e8c57c385467)
 ![cap5](https://github.com/pmont4/SysFacturas/assets/84726204/ec36946d-52b0-498d-8449-87fb0c441a99)
-![cap7](https://github.com/pmont4/SysFacturas/assets/84726204/6c3f342e-7adb-4683-9d82-5e4909f2881e)
+![cap8](https://github.com/pmont4/SysFacturas/assets/84726204/87ffce43-9f4c-48ef-ac32-3ffae70a37b9)
+
 
 
 
