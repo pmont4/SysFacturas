@@ -613,7 +613,7 @@ public class MainFrame extends javax.swing.JFrame {
 
                             int indicator = 1;
                             while (indicator == 1) {
-                                cantidad = JOptionPane.showInputDialog(null, "Ingrese la nueva descripcion del producto", "Producto", JOptionPane.PLAIN_MESSAGE);
+                                cantidad = JOptionPane.showInputDialog(null, "Ingrese la nueva cantidad del producto", "Producto", JOptionPane.PLAIN_MESSAGE);
 
                                 if (cantidad == null) {
                                     indicator = 0;
