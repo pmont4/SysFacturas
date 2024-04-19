@@ -4,8 +4,6 @@ import entity.Cliente;
 import entity.Factura;
 import entity.Producto;
 import java.awt.event.ItemEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,11 +12,17 @@ import java.util.Optional;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import lombok.Getter;
+import lombok.Setter;
 
 public class MainFrame extends javax.swing.JFrame {
-
+    
+    @Getter
+    @Setter
     private String direccion;
-    private final Factura factura;
+    
+    @Getter
+    private Factura factura;
 
     private final BillPrintingFrame billPrintingFrame;
 
@@ -28,10 +32,8 @@ public class MainFrame extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
 
         this.factura = new Factura();
-
-        int idFactura = (int) ((Math.random() * (9000 - 1000)) + 1000);
-        factura.setIdFactura(idFactura);
-        factura.setFechaEmision(LocalDateTime.now());
+        
+        this.generarInformacionFactura();
 
         this.labelNIT.setVisible(false);
         this.txtNIT.setVisible(false);
@@ -42,33 +44,42 @@ public class MainFrame extends javax.swing.JFrame {
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        this.setDireccionDeEmision();
+        this.setDireccion(this.inputDireccionEmision());
+        this.getFactura().setDireccionEmision(this.getDireccion());
+    }
+    
+    private void generarInformacionFactura() {
+        int idFactura = (int) ((Math.random() * (9000 - 1000)) + 1000);
+        this.getFactura().setIdFactura(idFactura);
+        this.getFactura().setFechaEmision(LocalDateTime.now());
     }
 
-    private void setDireccionDeEmision() {
+    private String inputDireccionEmision() {
+        String toReturn = "";
+        
         int indicator = 1;
         while (indicator == 1) {
-            direccion = JOptionPane.showInputDialog(null, "Ingrese la direccion donde se va a emitir la factura", "Sistema de facturas", JOptionPane.PLAIN_MESSAGE);
+            toReturn = JOptionPane.showInputDialog(null, "Ingrese la direccion donde se va a emitir la factura", "Sistema de facturas", JOptionPane.PLAIN_MESSAGE);
 
-            if (direccion == null) {
+            if (toReturn == null) {
                 this.dispose();
 
                 System.exit(0);
             } else {
-                if (direccion.equals("")) {
+                if (toReturn.equals("")) {
                     JOptionPane.showMessageDialog(null, "La direccion de emision no puede estar vacia.", "Sistema de facturas", JOptionPane.WARNING_MESSAGE);
                 } else {
-                    if (direccion.length() < 5) {
+                    if (toReturn.length() < 5) {
                         JOptionPane.showMessageDialog(null, "La direccion ingresada no es valida, es muy corta.", "Sistema de facturas", JOptionPane.WARNING_MESSAGE);
                     } else {
-                        this.factura.setDireccionEmision(direccion);
-                        this.setTitle(this.getTitle() + " - Direccion: " + direccion);
-
-                        indicator = 0;
+                        this.setTitle(this.getTitle() + " - Direccion: " + toReturn);
+                        return toReturn;
                     }
                 }
             }
         }
+        
+        return toReturn;
     }
 
     /**
@@ -726,11 +737,16 @@ public class MainFrame extends javax.swing.JFrame {
                 this.txtCantidadProducto.setText("");
                 this.txtValorProducto.setText("");
 
-                this.factura.setListaProductos(new ArrayList<>());
+                this.factura = null;
 
                 DefaultTableModel model = (DefaultTableModel) this.tableProductos.getModel();
                 model.setRowCount(0);
                 this.tableProductos.setModel(model);
+                
+                this.factura = new Factura();
+                
+                this.generarInformacionFactura();
+                this.getFactura().setDireccionEmision(this.getDireccion());
             } else {
                 /////////////////////////////////////////////
             }

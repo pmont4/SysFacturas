@@ -3,6 +3,8 @@ package frames;
 import entity.Cliente;
 import entity.Factura;
 import entity.Producto;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.ZoneOffset;
@@ -16,12 +18,10 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import lombok.Getter;
-import lombok.Setter;
 
 public class BillPrintingFrame extends javax.swing.JFrame {
     
     @Getter
-    @Setter
     private Factura factura;
     
     @Getter
@@ -37,6 +37,18 @@ public class BillPrintingFrame extends javax.swing.JFrame {
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                txtPaneFactura.setText("");
+            }
+        });
+    }
+    
+    public void setFactura(Factura factura) {
+        this.factura = factura;
+        this.setTitle("Impresion factura - ID factura: " + factura.getIdFactura());
     }
     
     public void generateFactura() {
@@ -166,6 +178,7 @@ public class BillPrintingFrame extends javax.swing.JFrame {
 
     private void btnCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCerrarMouseClicked
         this.dispose();
+        this.txtPaneFactura.setText("");
     }//GEN-LAST:event_btnCerrarMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
